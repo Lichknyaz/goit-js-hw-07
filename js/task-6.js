@@ -4,13 +4,19 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
+const controls = document.querySelector("#controls");
 const inputAmount = document.querySelector("#controls input");
 const buttonCreate = document.querySelector("[data-create]");
 const buttonDestroy = document.querySelector("[data-destroy]");
 const boxes = document.querySelector('#boxes');
 
-boxes.style.display = 'flex';
-boxes.style.flexWrap = 'wrap';
+const wrapperDiv = document.createElement("div");
+
+controls.parentNode.insertBefore(wrapperDiv, controls);
+wrapperDiv.appendChild(controls);
+wrapperDiv.appendChild(boxes);
+
+wrapperDiv.classList.add("wrapper-boxes");
 
 
 buttonCreate.addEventListener("click", () => {
@@ -23,6 +29,7 @@ buttonCreate.addEventListener("click", () => {
 buttonDestroy.addEventListener("click", () => {
   boxes.innerHTML = '';
   inputAmount.value = "";
+  wrapperDiv.style.width = "534px";
 })
 
 
@@ -31,6 +38,11 @@ function createBoxes(amount) {
   let addedBoxes = "";
   for (let i = 1; i <= amount; i++) {
     addedBoxes += `<div class='box' style="width: ${30+10*i}px; height: ${30+10*i}px; background-color: ${getRandomHexColor()}; margin: 10px"> </div> `;
+  }
+  if (amount >= 36) {
+    wrapperDiv.style.width = `${170 + 10 * amount}px`;
+  } else {
+    wrapperDiv.style.width = "534px";
   }
   boxes.insertAdjacentHTML("beforeend", addedBoxes);
   inputAmount.value = "";
